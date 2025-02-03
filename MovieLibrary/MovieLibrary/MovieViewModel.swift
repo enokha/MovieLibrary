@@ -3,8 +3,18 @@ import Combine
 
 class MovieViewModel: ObservableObject {
     @Published var movies: [Movie] = []
-    
     @Published var searchText: String = ""
+    
+    // dark modes settings
+    @AppStorage("isDarkMode") var isDarkMode: Bool = false
+    
+    var colorScheme: ColorScheme {
+        isDarkMode ? .dark : .light
+    }
+    
+    func toggleDarkMode() {
+        isDarkMode.toggle()
+    }
     
     init() {
         loadMoviesFromUserDefaults()

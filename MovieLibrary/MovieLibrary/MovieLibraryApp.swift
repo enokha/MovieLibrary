@@ -7,7 +7,8 @@ struct MovieLibraryApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(movieVM) 
+                .environmentObject(movieVM)
+                .preferredColorScheme(movieVM.colorScheme)
         }
     }
 }

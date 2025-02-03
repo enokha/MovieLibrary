@@ -19,7 +19,7 @@ struct ContentView: View {
                             MovieRowView(movie: movie)
                         }
                     }
-                    .onDelete(perform: movieVM.deleteMovie) // swipe to delete
+                    .onDelete(perform: movieVM.deleteMovie)
                 }
                 .listStyle(PlainListStyle())
             }
@@ -41,7 +41,17 @@ struct ContentView: View {
                     }
                 }
                 
-                // Add movie button
+                // toggle dark mode
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        movieVM.toggleDarkMode()
+                    }) {
+                        Image(systemName: movieVM.isDarkMode ? "moon.fill" : "sun.max.fill")
+                            .foregroundColor(movieVM.isDarkMode ? .yellow : .blue)
+                    }
+                }
+                
+                // add movie button
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button(action: {
                         showingAddMovie.toggle()
@@ -50,53 +60,10 @@ struct ContentView: View {
                     }
                 }
             }
-            // Add Movie Sheet
+            // Add movie sheet
             .sheet(isPresented: $showingAddMovie) {
                 AddOrEditMovieView()
             }
-        }
-    }
-}
-
-// small subview for each row
-struct MovieRowView: View {
-    let movie: Movie
-    
-    var body: some View {
-        HStack {
-            if let data = movie.posterData, let uiImage = UIImage(data: data) {
-                Image(uiImage: uiImage)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(width: 50, height: 70)
-                    .cornerRadius(8)
-            } else if let posterURL = movie.posterURL, let url = URL(string: posterURL) {
-                AsyncImage(url: url) { image in
-                    image
-                        .resizable()
-                        .scaledToFill()
-                } placeholder: {
-                    Color.gray
-                }
-                .frame(width: 50, height: 70)
-                .cornerRadius(8)
-            } else {
-                // default image
-                Rectangle()
-                    .fill(Color.gray)
-                    .frame(width: 50, height: 70)
-                    .cornerRadius(8)
-            }
-            
-            VStack(alignment: .leading) {
-                Text(movie.title)
-                    .font(.headline)
-                Text(movie.releaseYear)
-                    .font(.subheadline)
-            }
-            Spacer()
-            Text("\(movie.rating)/5 ⭐️")
-                .foregroundColor(.orange)
         }
     }
 }

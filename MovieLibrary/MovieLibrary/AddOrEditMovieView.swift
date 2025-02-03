@@ -27,7 +27,9 @@ struct AddOrEditMovieView: View {
                     TextField("Title *", text: $title)
                     TextField("Release Year *", text: $releaseYear)
                     
-                    Stepper("Rating: \(rating)/5 ⭐️", value: $rating, in: 0...5)
+                    Section(header: Text("Rating")) {
+                        StarRatingView(rating: $rating)
+                    }
                     
                     TextEditor(text: $description)
                         .frame(minHeight: 100)
